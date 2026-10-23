@@ -1,0 +1,61 @@
+# ============================================
+# Xcode / Swift .gitignore
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Xcode user-specific data (window layout, breakpoints, schemes state)
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Build products
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+
+# Archives and debug symbols
+*.ipa
+*.dSYM
+*.dSYM.zip
+*.xcarchive
+
+# Swift Package Manager
+# Package.resolved is NOT ignored on purpose: commit it so everyone uses the same package versions.
+.build/
+.swiftpm/
+/Packages
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Test results
+*.xcresult
+
+# CocoaPods (uncomment if you use it and don't want to commit Pods)
+# Pods/
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Secrets and local config (never commit API keys)
+*.env
+.env.*
+Secrets.xcconfig
+
+# IDEs other than Xcode
+.idea/
+.vscode/
