@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct FeedView: View {
+    let stories = Story.stories
+    
     var body: some View {
         VStack {
             ScrollView(.horizontal) {
                 LazyHStack{
-                    ForEach(0..<7) { _ in
-                        StoryCircleView(seen: false, image: "BrooklynBridge", username: "Apple")
+                    ForEach(stories) { story in
+                        StoryCircleView(story: story)
                             .containerRelativeFrame(.horizontal) { len, _ in
                                 len / 4
                             }

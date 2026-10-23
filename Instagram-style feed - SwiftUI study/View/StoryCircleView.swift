@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct StoryCircleView: View {
-    private let seen: Bool
-    private let image: String
-    private let username: String
+    private let story: Story
     private var ringStyle: AnyShapeStyle {
-        seen ? AnyShapeStyle(.gray.opacity(0.3)) : AnyShapeStyle(
-            storyGradient
+        story.seen ? AnyShapeStyle(Color(uiColor: .systemGray3)) : AnyShapeStyle(
+            Self.storyGradient
         )
     }
 
-    private let storyGradient = LinearGradient(
+    static let storyGradient = LinearGradient(
         colors: [
             .yellow,
             .orange,
@@ -28,24 +26,27 @@ struct StoryCircleView: View {
         endPoint: .topTrailing
     )
     
-    init(seen: Bool,
-         image: String,
-         username: String
-    ) {
-        self.seen = seen
-        self.image = image
-        self.username = username
+    private var storyImage: Image {
+        if let customImage = UIImage(named: story.image) {
+            return Image(uiImage: customImage)
+        }
+        return Image(systemName: "person.circle.fill")
     }
-    
+
+    init(story: Story) {
+        self.story = story
+    }
+
     var body: some View {
         VStack(spacing: 8) {
             GeometryReader { proxy in
                 let layout = StoryCircleSizeConfiguration(size: proxy.size.height)
                 ZStack {
-                    Image(image)
+                    storyImage
                         .resizable()
                         .scaledToFill()
                         .frame(width: layout.imageDiameter, height: layout.imageDiameter)
+                        .foregroundStyle(.secondary)
                         .clipShape(Circle())
 
                     Circle()
@@ -57,7 +58,7 @@ struct StoryCircleView: View {
             }
             .aspectRatio(1, contentMode: .fit)
 
-            Text(username)
+            Text(story.username)
                 .font(.caption)
                 .lineLimit(1)
                 .textCase(.lowercase)
@@ -66,17 +67,5 @@ struct StoryCircleView: View {
 }
 
 #Preview {
-    StoryCircleView(seen: false, image: "BrooklynBridge", username: "Apple")
+    StoryCircleView(story: Story(seen: true, image: "BrooklynBridge", username: "Apple"))
 }
-//
-//#Preview("Medium") {
-//    
-//    // give an specific size in the init
-//    StoryCircleView(seen: true, image: "BrooklynBridge", username: "Apple", size: 150)
-//}
-//
-//#Preview("Larga") {
-//    
-//    // give an specific size in the init
-//    StoryCircleView(seen: false, image: "BrooklynBridge", username: "Apple", size: 300)
-//}
