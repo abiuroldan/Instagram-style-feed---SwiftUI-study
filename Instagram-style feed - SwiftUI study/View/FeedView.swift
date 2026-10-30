@@ -8,32 +8,47 @@
 import SwiftUI
 
 struct FeedView: View {
-    let stories = Story.stories
+    let stories = UserStories.mock
+    let posts = Post.mock
     
     var body: some View {
         VStack {
-            ScrollView(.horizontal) {
-                LazyHStack{
-                    ForEach(stories) { story in
-                        StoryCircleView(story: story)
-                            .containerRelativeFrame(.horizontal) { len, _ in
-                                len / 4
-                            }
+            ScrollView {
+                topHeader
+
+//            Text("This is a very long string that might get truncated by its parent view.")
+//                .frame(maxHeight: .infinity)
+//                .padding(.horizontal)
+                LazyVStack {
+                    ForEach(posts) { post in
+                        PostView(post: post)
                     }
+                    .padding(.top)
                 }
-                .padding()
             }
             .scrollIndicators(.hidden)
-            .fixedSize(horizontal: false, vertical: true)
-            .background(.gray.opacity(0.2))
-
-            Text("This is a very long string that might get truncated by its parent view.")
-                .frame(maxHeight: .infinity)
-                .padding(.horizontal)
         }
+    }
+    
+    private var topHeader: some View {
+        ScrollView(.horizontal) {
+            LazyHStack(spacing: 12) {
+                ForEach(stories) { item in
+                    StoryCircleView(user: item.user, ring: item.ring)
+//                        .containerRelativeFrame(.horizontal) { len, _ in
+//                            len / 4
+//                        }
+                        .containerRelativeFrame(.horizontal, count: 9, span: 2, spacing: 12)
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
+        }
+        .scrollIndicators(.hidden)
     }
 }
 
 #Preview {
     FeedView()
+        .onAppBackground()
 }

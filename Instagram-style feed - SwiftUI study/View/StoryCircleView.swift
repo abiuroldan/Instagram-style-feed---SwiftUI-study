@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct StoryCircleView: View {
-    private let story: Story
+    private let user: User
+    private let storyRing: StoryRing
     private var ringStyle: AnyShapeStyle {
-        story.seen ? AnyShapeStyle(Color(uiColor: .systemGray3)) : AnyShapeStyle(
+        storyRing == .unseen ?  AnyShapeStyle(
             Self.storyGradient
-        )
+        ) : AnyShapeStyle(Color(uiColor: .systemGray3))
     }
 
     static let storyGradient = LinearGradient(
@@ -27,14 +28,22 @@ struct StoryCircleView: View {
     )
     
     private var storyImage: Image {
-        if let customImage = UIImage(named: story.image) {
+        if let customImage = UIImage(named: user.avatar) {
             return Image(uiImage: customImage)
         }
         return Image(systemName: "person.circle.fill")
     }
+    
+    private let showUsername: Bool
 
-    init(story: Story) {
-        self.story = story
+    init(
+        user: User,
+        ring: StoryRing,
+        showUsername: Bool = true
+    ) {
+        self.user = user
+        self.showUsername = showUsername
+        self.storyRing = ring
     }
 
     var body: some View {
@@ -49,23 +58,51 @@ struct StoryCircleView: View {
                         .foregroundStyle(.secondary)
                         .clipShape(Circle())
 
-                    Circle()
-                        .strokeBorder(
-                            ringStyle,
-                            lineWidth: layout.ringWidth
-                        )
+                    if storyRing != .none {
+                        Circle()
+                            .strokeBorder(
+                                ringStyle,
+                                lineWidth: layout.ringWidth
+                            )
+                    }
                 }
+                .frame(width: layout.size, height: layout.size)
             }
             .aspectRatio(1, contentMode: .fit)
 
-            Text(story.username)
-                .font(.caption)
-                .lineLimit(1)
-                .textCase(.lowercase)
+            if showUsername {
+                Text(user.displayName)
+                    .font(.caption)
+                    .lineLimit(1)
+                    .textCase(.lowercase)
+            }
         }
     }
 }
 
-#Preview {
-    StoryCircleView(story: Story(seen: true, image: "BrooklynBridge", username: "Apple"))
+#Preview("None") {
+    StoryCircleView(
+        user: User(username: "Apple", displayName: "Apple", avatar: "BrooklynBridge"),
+        ring: .none,
+        showUsername: true
+    )
+    .onAppBackground()
+}
+
+#Preview("Unseen") {
+    StoryCircleView(
+        user: User(username: "Apple", displayName: "Apple", avatar: "BrooklynBridge"),
+        ring: .unseen,
+        showUsername: true
+    )
+    .onAppBackground()
+}
+
+#Preview("Seen") {
+    StoryCircleView(
+        user: User(username: "Apple", displayName: "Apple", avatar: "BrooklynBridge"),
+        ring: .seen,
+        showUsername: true
+    )
+    .onAppBackground()
 }

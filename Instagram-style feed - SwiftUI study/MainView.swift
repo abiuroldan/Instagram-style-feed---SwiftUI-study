@@ -8,13 +8,49 @@
 import SwiftUI
 
 struct MainView: View {
+    @State private var selectedTab: AppTab = .home
+    
     var body: some View {
-        TabView {
-            FeedView()
-                .tabItem {
-                    Image(systemName: "house")
-                }
+        TabView(selection: $selectedTab) {
+            Tab(value: .home) {
+                FeedView()
+                    .onAppBackground()
+            } label: {
+                Image(selectedTab == .home ? .homeSelected : .home)
+                    .accessibilityLabel("Home")
+            }
+
+            Tab(value: .reels) {
+                Placeholder(placeholderText: "Reels")
+            } label: {
+                Image(selectedTab == .reels ? .reelsSelected : .reels)
+                    .accessibilityLabel("Reels")
+            }
+
+            Tab(value: .messages) {
+                Placeholder(placeholderText: "Messages")
+            } label: {
+                Image(selectedTab == .messages ? .messagesSelected : .messages)
+                    .accessibilityLabel("Messages")
+            }
+
+            Tab(value: .search) {
+                Placeholder(placeholderText: "Search")
+            } label: {
+                Image(selectedTab == .search ? .searchSelected : .search)
+                    .accessibilityLabel("Search")
+            }
+            
+            Tab(value: .profile) {
+                Placeholder(placeholderText: "Profile")
+            } label: {
+                Image(selectedTab == .profile ? .profileSelected : .profile)
+                    .accessibilityLabel("Profile")
+            }
         }
+//        .tabViewStyle(.sidebarAdaptable)
+//        .tabBarMinimizeBehavior(.onScrollDown)
+        .tint(.primary)
     }
 }
 
