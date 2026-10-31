@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct MainView: View {
-    @State private var selectedTab: AppTab = .home
+    @State private var selectedTab: AppTab = .feed
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab(value: .home) {
+            Tab(value: .feed) {
                 FeedView()
                     .onAppBackground()
             } label: {
-                Image(selectedTab == .home ? .homeSelected : .home)
+                Image(selectedTab == .feed ? .feedSelected : .feed)
                     .accessibilityLabel("Home")
             }
 

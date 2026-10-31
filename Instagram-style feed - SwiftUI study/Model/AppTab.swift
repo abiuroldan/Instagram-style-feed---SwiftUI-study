@@ -8,5 +8,5 @@
 import Foundation
 
 enum AppTab {
-    case home, reels, messages, search, profile
+    case feed, reels, messages, search, profile
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FeedView: View {
     let stories = UserStories.mock
-    let posts = Post.mock
+    @State private var posts = Post.mock
     
     var body: some View {
         VStack {
@@ -20,8 +20,8 @@ struct FeedView: View {
 //                .frame(maxHeight: .infinity)
 //                .padding(.horizontal)
                 LazyVStack {
-                    ForEach(posts) { post in
-                        PostView(post: post)
+                    ForEach($posts) { $post in
+                        PostView(post: $post)
                     }
                     .padding(.top)
                 }

@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct PostView: View {
-    private let post: Post
-    
-    init(post: Post) {
-        self.post = post
-    }
+    @Binding var post: Post
     
     var body: some View {
         VStack {
@@ -35,7 +31,13 @@ struct PostView: View {
                             .scaledToFill()
                     }
                     .clipped()
+                    .contentShape(Rectangle())
+                    .onTapGesture(count: 2) {
+                        post.engagement.like()
+                    }
             }
+            
+            actionBar
         }
     }
     
@@ -83,25 +85,123 @@ struct PostView: View {
             .fontWeight(.bold)
         }
     }
+    
+    private var actionBar: some View {
+        HStack {
+            
+            Button {
+                post.engagement.toggleLike()
+            } label: {
+                Label {
+                    Text(post.engagement.likesCount, format: .number.notation(.compactName))
+                } icon: {
+                    Image(systemName: "heart")
+                        .environment(\.symbolVariants, post.engagement.isLiked ?  .fill : .none)
+                        .foregroundStyle(post.engagement.isLiked ? .red : .primary)
+                        .symbolEffect(.bounce, value: post.engagement.isLiked)
+                }
+            }
+            .accessibilityLabel("Like")
+            .accessibilityValue("\(post.engagement.likesCount)")
+            .accessibilityAddTraits(post.engagement.isLiked ? .isSelected : [])
+            
+
+            Button {
+                
+            } label: {
+                Label(post.engagement.commentsCount.formatted(.number.notation(.compactName)), systemImage: "bubble.right")
+                    .accessibilityLabel("Comments")
+            }
+            
+            Button {
+                
+            } label: {
+                Label(post.engagement.repostsCount.formatted(.number.notation(.compactName)), systemImage: "repeat")
+            }
+            
+            Button {
+                
+            } label: {
+                Label(post.engagement.sharesCount.formatted(.number.notation(.compactName)), systemImage: "paperplane")
+            }
+
+            Spacer()
+
+            Image(systemName: "bookmark")
+        }
+        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
+    }
 }
 
 #Preview("Chasing Waterfall") {
     PostView(
-        post: Post(image: "chasing_waterfall", author: User(username: "Apple", displayName: "codingwithparvez", avatar: "BrooklynBridge"), subtitle: "Ad")
+        post: .constant(
+            Post(
+                image: "chasing_waterfall",
+                author: User(
+                    username: "Apple",
+                    displayName: "codingwithparvez",
+                    avatar: "BrooklynBridge"
+                ),
+                subtitle: "Ad",
+                engagement: .init(
+                    isLiked: false,
+                    likesCount: 88594,
+                    commentsCount: 120,
+                    repostsCount: 93,
+                    sharesCount: 9
+                )
+            )
+        )
     )
     .onAppBackground()
 }
 
 #Preview("BrooklynBridge") {
     PostView(
-        post: Post(image: "BrooklynBridge", author: User(username: "Apple", displayName: "codingwithparvez", avatar: "BrooklynBridge"), subtitle: "Ad")
+        post: .constant(
+            Post(
+                image: "BrooklynBridge",
+                author: User(
+                    username: "Apple",
+                    displayName: "codingwithparvez",
+                    avatar: "BrooklynBridge"
+                ),
+                subtitle: "Ad",
+                engagement: .init(
+                    isLiked: false,
+                    likesCount: 49483,
+                    commentsCount: 2,
+                    repostsCount: 32,
+                    sharesCount: 43
+                )
+            )
+        )
     )
     .onAppBackground()
 }
 
 #Preview("layout_sea") {
     PostView(
-        post: Post(image: "layout_sea", author: User(username: "Apple", displayName: "codingwithparvez", avatar: "BrooklynBridge"), subtitle: "Ad")
+        post: .constant(
+            Post(
+                image: "layout_sea",
+                author: User(
+                    username: "Apple",
+                    displayName: "codingwithparvez",
+                    avatar: "BrooklynBridge"
+                ),
+                subtitle: "Ad",
+                engagement: .init(
+                    isLiked: false,
+                    likesCount: 28439,
+                    commentsCount: 39,
+                    repostsCount: 23,
+                    sharesCount: 12
+                )
+            )
+        )
     )
     .onAppBackground()
 }
