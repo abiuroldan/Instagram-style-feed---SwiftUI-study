@@ -109,7 +109,7 @@ struct PostView: View {
             Button {
                 
             } label: {
-                Label(post.engagement.commentsCount.formatted(.number.notation(.compactName)), systemImage: "bubble.right")
+                Label(post.engagement.commentsCount.formatted(.number.notation(.compactName)), systemImage: "message")
                     .accessibilityLabel("Comments")
             }
             
@@ -129,31 +129,32 @@ struct PostView: View {
 
             Image(systemName: "bookmark")
         }
+        .tint(.primary)
         .padding(.vertical, 4)
         .padding(.horizontal, 8)
     }
 }
 
 #Preview("Chasing Waterfall") {
-    PostView(
-        post: .constant(
-            Post(
-                image: "chasing_waterfall",
-                author: User(
-                    username: "Apple",
-                    displayName: "codingwithparvez",
-                    avatar: "BrooklynBridge"
-                ),
-                subtitle: "Ad",
-                engagement: .init(
-                    isLiked: false,
-                    likesCount: 88594,
-                    commentsCount: 120,
-                    repostsCount: 93,
-                    sharesCount: 9
-                )
-            )
+    @Previewable @State var post = Post(
+        image: "chasing_waterfall",
+        author: User(
+            username: "Apple",
+            displayName: "codingwithparvez",
+            avatar: "BrooklynBridge"
+        ),
+        subtitle: "Ad",
+        engagement: .init(
+            isLiked: false,
+            likesCount: 999,
+            commentsCount: 120,
+            repostsCount: 93,
+            sharesCount: 9
         )
+    )
+    
+    PostView(
+        post: $post
     )
     .onAppBackground()
 }
@@ -175,30 +176,6 @@ struct PostView: View {
                     commentsCount: 2,
                     repostsCount: 32,
                     sharesCount: 43
-                )
-            )
-        )
-    )
-    .onAppBackground()
-}
-
-#Preview("layout_sea") {
-    PostView(
-        post: .constant(
-            Post(
-                image: "layout_sea",
-                author: User(
-                    username: "Apple",
-                    displayName: "codingwithparvez",
-                    avatar: "BrooklynBridge"
-                ),
-                subtitle: "Ad",
-                engagement: .init(
-                    isLiked: false,
-                    likesCount: 28439,
-                    commentsCount: 39,
-                    repostsCount: 23,
-                    sharesCount: 12
                 )
             )
         )
