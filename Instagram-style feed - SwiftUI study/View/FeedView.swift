@@ -28,12 +28,6 @@ struct FeedView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .task {
-            print(".Task called")
-        }
-        .onAppear {
-            print(".onAppear called")
-        }
     }
     
     private var topHeader: some View {
